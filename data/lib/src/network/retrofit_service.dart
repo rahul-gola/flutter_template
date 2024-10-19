@@ -8,4 +8,7 @@ abstract class RetrofitService {
   factory RetrofitService(Dio dio, {String? baseUrl}) {
     return RetrofitService(dio, baseUrl: baseUrl);
   }
+
+
+
 }

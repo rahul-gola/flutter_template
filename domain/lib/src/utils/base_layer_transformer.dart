@@ -1,6 +1,4 @@
-
-abstract class BaseLayerDataTransformer<F, T>{
-
+abstract class BaseLayerDataTransformer<F, T> {
   F restore(T data);
 
   T transform();

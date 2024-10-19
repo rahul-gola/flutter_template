@@ -1,4 +1,3 @@
-
 import 'package:domain/src/model/error/error_info.dart';
 
 abstract class BaseError implements Exception {
