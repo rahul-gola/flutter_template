@@ -1,69 +1,92 @@
 import 'dart:io';
 
-import 'package:data/src/util/get_error.dart';
+import 'package:data/src/entity/remote/error/error_entity.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/domain.dart';
 import 'package:retrofit/retrofit.dart';
 
-Future<Either<NetworkError, T>> safeApiCall<T>(Future<T> apiCall) async {
+Future<Object> safeApiCall<T>(Future<T> apiCall) async {
   try {
     final originalResponse = await apiCall;
     final eitherResponse = originalResponse as HttpResponse<dynamic>;
-    if (!eitherResponse.isSuccessful()) {
-      return left(getError(apiResponse: eitherResponse.response));
-    } else {
+
+    if (eitherResponse.response.statusCode == 200) {
       return right(originalResponse);
-    }
-  } on Exception catch (throwable) {
-    switch (throwable.runtimeType) {
-      case DioException:
-        switch ((throwable as DioException).type) {
-          case DioExceptionType.connectionTimeout:
-            //"Connection timeout with API server";
-            break;
-          case DioExceptionType.sendTimeout:
-            //"Receive timeout exception";
-            break;
-          case DioExceptionType.receiveTimeout:
-            //"Receive timeout in connection with API server";
-            break;
-          case DioExceptionType.badCertificate:
-          // TODO: Handle this case.
-          case DioExceptionType.badResponse:
-          // TODO: Handle this case.
-          case DioExceptionType.cancel:
-          // TODO: Handle this case.
-          case DioExceptionType.connectionError:
-          // TODO: Handle this case.
-          case DioExceptionType.unknown:
-          // TODO: Handle this case.
+    } else {
+      if (eitherResponse.response.data != null) {
+        try {
+          final ErrorEntity errorResponseEntity =
+              ErrorEntity.fromJson(eitherResponse.response.data);
+          return NetworkError(
+            httpError: errorResponseEntity.code ?? 1000,
+            message: errorResponseEntity.message ?? '',
+            cause: Exception("Server Response Error"),
+          );
+        } catch (exception) {
+          // exception.printStackTrace();
+          return NetworkError(
+              cause: Exception("Server Response Error"),
+              httpError: eitherResponse.response.statusCode!,
+              message: eitherResponse.response.statusMessage!);
         }
-
-        break;
-
-      case IOException:
-        return left(NetworkError(
-            message: throwable.toString(), httpError: 502, cause: throwable));
-
-      case HttpException:
-        return left(NetworkError(
-            message: (throwable as HttpException).message,
-            httpError: 502,
-            cause: throwable));
-
-      default:
-        return left(NetworkError(
-            message: throwable.toString(), httpError: 502, cause: throwable));
+      } else {
+        return NetworkError(
+            cause: Exception("Server Response Error"),
+            httpError: eitherResponse.response.statusCode!,
+            message: eitherResponse.response.statusMessage!);
+      }
     }
-    return left(NetworkError(
-        message: throwable.toString(), httpError: 502, cause: throwable));
+  } on DioException catch (e) {
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+        return left(
+          NetworkError(
+            message: 'Connection timeout with API server',
+            httpError: 504,
+            cause: e,
+          ),
+        );
+      case DioExceptionType.sendTimeout:
+        return left(
+          NetworkError(
+            message: 'Send timeout exception',
+            httpError: 504,
+            cause: e,
+          ),
+        );
+      case DioExceptionType.receiveTimeout:
+        return left(
+          NetworkError(
+            message: 'Receive timeout in connection with API server',
+            httpError: 504,
+            cause: e,
+          ),
+        );
+      case DioExceptionType.badCertificate:
+      case DioExceptionType.badResponse:
+      case DioExceptionType.cancel:
+      case DioExceptionType.connectionError:
+      case DioExceptionType.unknown:
+        return left(
+          NetworkError(
+            message: 'Unknown error',
+            httpError: 502,
+            cause: e,
+          ),
+        );
+    }
+  } on IOException catch (e) {
+    return left(
+      NetworkError(
+        message: e.toString(),
+        httpError: 502,
+        cause: e,
+      ),
+    );
   }
-}
-
-extension RetrofitResponse on HttpResponse {
-  /// Returns true if the code is in [200..300), which means the request was successfully received,
-  /// understood, and accepted.
-  bool isSuccessful() {
-    return response.statusCode! >= 200 && response.statusCode! < 300;
-  }
+  // on HttpException catch (e) {
+  //   return left(NetworkError(message: e.message, httpError: 502, cause: e));
+  // } catch (e) {
+  //   return left(NetworkError(message: e.toString(), httpError: 502, cause: e));
+  // }
 }

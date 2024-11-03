@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-abstract class CoreBasePageState<VM, T extends StatefulWidget> extends State<T> with WidgetsBindingObserver {
+abstract class CoreBasePageState<VM, T extends StatefulWidget> extends State<T>
+    with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool subscribeVisibilityEvents = false;

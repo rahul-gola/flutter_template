@@ -1,1 +1,1 @@
-class BaseEvent {}
+abstract class BaseEvent {}

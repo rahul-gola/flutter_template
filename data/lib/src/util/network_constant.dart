@@ -1,3 +1,5 @@
 mixin class NetworkConstant {
-  String get baseUrl => 'https://api.github.com/';
+  String get baseUrl => 'https://fakestoreapi.com';
+
+  static const String products = 'products';
 }

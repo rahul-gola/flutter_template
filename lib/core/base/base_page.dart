@@ -9,22 +9,23 @@ abstract class BasePage<VM extends BaseViewModel> extends StatefulWidget {
   const BasePage({super.key});
 }
 
-abstract class BasePageState<VM extends BaseViewModel, T extends BasePage<VM>> extends CoreBasePageState<VM, T> {
-
+abstract class BasePageState<VM extends BaseViewModel, T extends BasePage<VM>>
+    extends CoreBasePageState<VM, T> {
   @mustCallSuper
   @protected
-  VM provideBase();
+  VM get provideBase;
 
-  late final VM _viewModel= provideBase();
+  late final VM _viewModel = provideBase;
 }
 
-abstract class BaseStatefulPage<VM extends BaseViewModel, B extends BasePage<VM>> extends BasePageState<VM, B> {
-
-@override
+abstract class BaseStatefulPage<VM extends BaseViewModel,
+    B extends BasePage<VM>> extends BasePageState<VM, B> {
+  @override
   void initState() {
     super.initState();
     onBaseModelReady(_viewModel);
   }
+
   @override
   Widget build(BuildContext context) {
     return getLayout();

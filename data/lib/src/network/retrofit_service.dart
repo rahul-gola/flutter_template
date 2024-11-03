@@ -1,4 +1,6 @@
+import 'package:data/src/util/network_constant.dart';
 import 'package:dio/dio.dart';
+import 'package:domain/domain.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'retrofit_service.g.dart';
@@ -9,6 +11,6 @@ abstract class RetrofitService {
     return RetrofitService(dio, baseUrl: baseUrl);
   }
 
-
-
+  @GET(NetworkConstant.products)
+  Future<List<ArticleModel>> getArticles();
 }
