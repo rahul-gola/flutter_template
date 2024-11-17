@@ -19,7 +19,7 @@ dependencies:
     path: domain
 
   flutter_bloc: ^8.1.4
-  get_it: ^8.0.0
+  get_it: ^8.0.2
   injectable: ^2.5.0
 
 dev_dependencies:

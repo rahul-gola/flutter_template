@@ -6,3 +6,11 @@ import 'package:injectable/injectable.dart';
 Future<void> $initDomainModule(GetIt getIt) async {
   getIt.initDomainModule();
 }
+
+// @module
+// abstract class DomainModule {
+//   @injectable
+//   GetArticleUseCase createLocationUseCaseProvider(ArticleRepository repository) {
+//     return GetArticleUseCase(repository);
+//   }
+// }

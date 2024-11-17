@@ -6,15 +6,27 @@ Either<L, R> left<L, R>(L value) => (Side.left, (value, null));
 
 Either<L, R> right<L, R>(R value) => (Side.right, (null, value));
 
-extension EitherExtension<L, R> on Either<L, R> {
-  T fold<T>(T Function(L) leftFn, T Function(R) rightFn) {
+extension EitherExtension<L, R> on (Side, (L?, R?)) {
+  void fold(void Function(L) leftFn, void Function(R) rightFn) {
     final (side, values) = this;
     final (leftValue, rightValue) = values;
 
-    return switch (side) {
-      Side.left => leftFn(leftValue as L),
-      Side.right => rightFn(rightValue as R),
-    };
+    switch (side) {
+      case Side.left:
+        leftFn(leftValue as L);
+        break;
+      case Side.right:
+        rightFn(rightValue as R);
+        break;
+    }
+    // T fold<T>(T Function(L) leftFn, T Function(R) rightFn) {
+    //   final (side, values) = this;
+    //   final (leftValue, rightValue) = values;
+    //
+    //   return switch (side) {
+    //     Side.left => leftFn(leftValue as L),
+    //     Side.right => rightFn(rightValue as R),
+    //   };
   }
 
 // bool isLeft() => $1 == Side.left;

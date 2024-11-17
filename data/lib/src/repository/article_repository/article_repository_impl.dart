@@ -1,4 +1,5 @@
 import 'package:data/src/source/article_data_source/article_ds.dart';
+import 'package:data/src/util/safe_api_call.dart';
 import 'package:domain/domain.dart';
 import 'package:injectable/injectable.dart';
 
@@ -10,6 +11,6 @@ class ArticleRepositoryImpl implements ArticleRepository {
 
   @override
   Future<Either<NetworkError, List<ArticleModel>>> getArticles() {
-    throw UnimplementedError();
+    return safeApiCall<List<ArticleModel>>(articleDataSource.getArticles());
   }
 }

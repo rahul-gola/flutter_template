@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:domain/domain.dart';
 import 'package:retrofit/retrofit.dart';
 
-Future<Object> safeApiCall<T>(Future<T> apiCall) async {
+Future<Either<NetworkError, T>> safeApiCall<T>(Future<T> apiCall) async {
   try {
     final originalResponse = await apiCall;
     final eitherResponse = originalResponse as HttpResponse<dynamic>;
@@ -17,23 +17,31 @@ Future<Object> safeApiCall<T>(Future<T> apiCall) async {
         try {
           final ErrorEntity errorResponseEntity =
               ErrorEntity.fromJson(eitherResponse.response.data);
-          return NetworkError(
-            httpError: errorResponseEntity.code ?? 1000,
-            message: errorResponseEntity.message ?? '',
-            cause: Exception("Server Response Error"),
+          return Left(
+            NetworkError(
+              httpError: errorResponseEntity.code,
+              message: errorResponseEntity.message,
+              cause: Exception("Server Response Error"),
+            ),
           );
         } catch (exception) {
           // exception.printStackTrace();
-          return NetworkError(
+          return Left(
+            NetworkError(
               cause: Exception("Server Response Error"),
-              httpError: eitherResponse.response.statusCode!,
-              message: eitherResponse.response.statusMessage!);
+              httpError: eitherResponse.response.statusCode ?? 404,
+              message: eitherResponse.response.statusMessage ?? '',
+            ),
+          );
         }
       } else {
-        return NetworkError(
+        return Left(
+          NetworkError(
             cause: Exception("Server Response Error"),
-            httpError: eitherResponse.response.statusCode!,
-            message: eitherResponse.response.statusMessage!);
+            httpError: eitherResponse.response.statusCode ?? 404,
+            message: eitherResponse.response.statusMessage ?? '',
+          ),
+        );
       }
     }
   } on DioException catch (e) {
