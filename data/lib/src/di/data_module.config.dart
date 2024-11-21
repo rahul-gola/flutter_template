@@ -44,7 +44,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1066.RetrofitService>(
         () => networkModule.providerRetrofitService(gh<_i361.Dio>()));
     gh.factory<_i492.ArticleDataSource>(
-        () => _i634.ArticleRepositoryImpl(gh<_i1066.RetrofitService>()));
+        () => _i634.ArticleDataSourceImpl(gh<_i1066.RetrofitService>()));
     gh.factory<_i494.ArticleRepository>(() => _i503.ArticleRepositoryImpl(
         articleDataSource: gh<_i492.ArticleDataSource>()));
     return this;

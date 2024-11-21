@@ -29,38 +29,34 @@ extension EitherExtension<L, R> on (Side, (L?, R?)) {
     //   };
   }
 
-// bool isLeft() => $1 == Side.left;
-// bool isRight() => $1 == Side.right;
-//
-// L getLeft() => $2.$1 as L;
-// R getRight() => $2.$2 as R;
+  bool isLeft() => $1 == Side.left;
+
+  bool isRight() => $1 == Side.right;
+
+  L getLeft() => $2.$1 as L;
+
+  R getRight() => $2.$2 as R;
 }
 
-// Example usage
-// Future<Either<String, List<String>>> fetchData() async {
-//   try {
-//     // Simulating some data fetching
-//     List<String> data = ['item1', 'item2', 'item3'];
-//     return right(data);
-//   } catch (e) {
-//     return left(e.toString());
-//   }
-// }
-//
-// Future<void> main() async {
-//   final result =await fetchData();
-//
-//   final output = result.fold(
-//     (error) => 'Error: $error',
-//     (data) => 'Success: $data'
-//   );
-//
-//   print(output);
-//
-//   // Alternative usage
-//   if (result.isLeft()) {
-//     print('Error occurred: ${result.getLeft()}');
-//   } else {
-//     print('Data fetched successfully: ${result.getRight()}');
-//   }
-// }
+/*Future<Either<String, List<String>>> fetchData() async {
+  try {
+    // Simulating some data fetching
+    List<String> data = ['item1', 'item2', 'item3'];
+    return right(data);
+  } catch (e) {
+    return left(e.toString());
+  }
+}
+
+Future<void> main() async {
+  final result = await fetchData();
+
+  result.fold((error) => 'Error: $error', (data) => 'Success: $data');
+
+  // Alternative usage
+  if (result.isLeft()) {
+    print('Error occurred: ${result.getLeft()}');
+  } else {
+    print('Data fetched successfully: ${result.getRight()}');
+  }
+}*/

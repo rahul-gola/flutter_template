@@ -4,13 +4,11 @@ import 'package:domain/domain.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable(as: ArticleDataSource)
-class ArticleRepositoryImpl implements ArticleDataSource {
-  ArticleRepositoryImpl(this._retrofitService);
+class ArticleDataSourceImpl implements ArticleDataSource {
+  ArticleDataSourceImpl(this._retrofitService);
 
   final RetrofitService _retrofitService;
 
   @override
-  Future<List<ArticleModel>> getArticles() {
-    return _retrofitService.getArticles();
-  }
+  Future<List<ArticleModel>> getArticles() => _retrofitService.getArticles();
 }

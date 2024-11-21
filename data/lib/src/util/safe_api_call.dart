@@ -17,7 +17,7 @@ Future<Either<NetworkError, T>> safeApiCall<T>(Future<T> apiCall) async {
         try {
           final ErrorEntity errorResponseEntity =
               ErrorEntity.fromJson(eitherResponse.response.data);
-          return Left(
+          return left(
             NetworkError(
               httpError: errorResponseEntity.code,
               message: errorResponseEntity.message,
@@ -26,7 +26,7 @@ Future<Either<NetworkError, T>> safeApiCall<T>(Future<T> apiCall) async {
           );
         } catch (exception) {
           // exception.printStackTrace();
-          return Left(
+          return left(
             NetworkError(
               cause: Exception("Server Response Error"),
               httpError: eitherResponse.response.statusCode ?? 404,
@@ -35,7 +35,7 @@ Future<Either<NetworkError, T>> safeApiCall<T>(Future<T> apiCall) async {
           );
         }
       } else {
-        return Left(
+        return left(
           NetworkError(
             cause: Exception("Server Response Error"),
             httpError: eitherResponse.response.statusCode ?? 404,
