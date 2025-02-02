@@ -87,7 +87,7 @@ class DataProviderElement<T extends BlocBase> extends ComponentElement {
   }
 }
 
-/*/// Concrete implementation of [StatelessBase] for the home screen.
+/// Concrete implementation of [StatelessBase] for the home screen.
 ///
 /// Uses [HomeBloc] for state management and provides a basic UI structure.
 class HomeScreen extends StatelessBase<HomeBloc> {
@@ -127,5 +127,4 @@ class HomeScreen extends StatelessBase<HomeBloc> {
   void dispose() {
     super.dispose();
   }
-}*/
-
+}

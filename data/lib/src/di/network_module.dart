@@ -10,9 +10,7 @@ abstract class NetworkModule with NetworkConstant {
   @lazySingleton
   Dio providerDio(List<Interceptor> interceptors) {
     Dio dio = Dio(BaseOptions(baseUrl: ''));
-    dio.interceptors.addAll(
-      interceptors,
-    );
+    dio.interceptors.addAll(interceptors);
     return dio;
   }
 
