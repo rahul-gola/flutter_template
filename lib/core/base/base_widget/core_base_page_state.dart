@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 abstract class CoreBasePageState<VM, T extends StatefulWidget> extends State<T>
     with WidgetsBindingObserver {
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool subscribeVisibilityEvents = false;
 
@@ -34,24 +33,18 @@ abstract class CoreBasePageState<VM, T extends StatefulWidget> extends State<T>
         : throw Exception("View model is not attached");
   }
 
-  GlobalKey<ScaffoldState> get scaffoldKey => _scaffoldKey;
-
   /// Actual Screen which load scaffold and load UI
   Widget getLayout() {
-    return WillPopScope(
-      onWillPop: onBackPressed,
-      child: Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: scaffoldBackgroundColor(),
-        appBar: buildAppbar(),
-        extendBodyBehindAppBar: extendBodyBehindAppBar(),
-        body: buildScaffoldBody(context, _viewModel as VM),
-        drawer: buildDrawer(),
-        drawerEnableOpenDragGesture: drawerEnableOpenDragGesture(),
-        bottomNavigationBar: buildBottomNavigationBar(),
-        bottomSheet: buildBottomSheet(),
-        resizeToAvoidBottomInset: true,
-      ),
+    return Scaffold(
+      backgroundColor: scaffoldBackgroundColor(),
+      appBar: buildAppbar(),
+      extendBodyBehindAppBar: extendBodyBehindAppBar(),
+      body: buildScaffoldBody(context, _viewModel as VM),
+      drawer: buildDrawer(),
+      drawerEnableOpenDragGesture: drawerEnableOpenDragGesture(),
+      bottomNavigationBar: buildBottomNavigationBar(),
+      bottomSheet: buildBottomSheet(),
+      resizeToAvoidBottomInset: true,
     );
   }
 

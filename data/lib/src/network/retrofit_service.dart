@@ -11,6 +11,6 @@ abstract class RetrofitService {
     return _RetrofitService(dio, baseUrl: baseUrl);
   }
 
-  @POST(NetworkConstant.products)
+  @GET(NetworkConstant.products)
   Future<List<ArticleModel>> getArticles();
 }

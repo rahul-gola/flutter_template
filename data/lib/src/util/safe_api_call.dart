@@ -8,10 +8,10 @@ import 'package:retrofit/retrofit.dart';
 Future<Either<NetworkError, T>> safeApiCall<T>(Future<T> apiCall) async {
   try {
     final originalResponse = await apiCall;
-    final eitherResponse = originalResponse as HttpResponse<dynamic>;
+    final eitherResponse = originalResponse as HttpResponse<T>;
 
     if (eitherResponse.response.statusCode == 200) {
-      return right(originalResponse);
+      return right(originalResponse as T);
     } else {
       if (eitherResponse.response.data != null) {
         try {
