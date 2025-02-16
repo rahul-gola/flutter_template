@@ -12,11 +12,13 @@ class HomeView extends ModularState<HomeBloc> {
       children: [
         BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
-            return ListView.builder(
-              itemCount: state.list.length,
-              itemBuilder: (context, index) {
-                return Text(state.list[index].title);
-              },
+            return Expanded(
+              child: ListView.builder(
+                itemCount: state.list.length,
+                itemBuilder: (context, index) {
+                  return Text(state.list[index].title);
+                },
+              ),
             );
           },
         ),

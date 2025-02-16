@@ -8,7 +8,7 @@ part 'retrofit_service.g.dart';
 @RestApi()
 abstract class RetrofitService {
   factory RetrofitService(Dio dio, {String? baseUrl}) {
-    return RetrofitService(dio, baseUrl: baseUrl);
+    return _RetrofitService(dio, baseUrl: baseUrl);
   }
 
   @POST(NetworkConstant.products)
