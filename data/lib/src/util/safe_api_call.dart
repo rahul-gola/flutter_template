@@ -3,48 +3,35 @@ import 'dart:io';
 import 'package:data/src/entity/remote/error/error_entity.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/domain.dart';
-import 'package:retrofit/retrofit.dart';
 
 Future<Either<NetworkError, T>> safeApiCall<T>(Future<T> apiCall) async {
   try {
-    final originalResponse = await apiCall;
-    final eitherResponse = originalResponse as HttpResponse<T>;
-
-    if (eitherResponse.response.statusCode == 200) {
-      return right(originalResponse as T);
-    } else {
-      if (eitherResponse.response.data != null) {
-        try {
-          final ErrorEntity errorResponseEntity =
-              ErrorEntity.fromJson(eitherResponse.response.data);
-          return left(
-            NetworkError(
-              httpError: errorResponseEntity.code,
-              message: errorResponseEntity.message,
-              cause: Exception("Server Response Error"),
-            ),
-          );
-        } catch (exception) {
-          // exception.printStackTrace();
-          return left(
-            NetworkError(
-              cause: Exception("Server Response Error"),
-              httpError: eitherResponse.response.statusCode ?? 404,
-              message: eitherResponse.response.statusMessage ?? '',
-            ),
-          );
-        }
-      } else {
+    final response = await apiCall;
+    return right(response);
+  } on DioException catch (e) {
+    if (e.response != null) {
+      try {
+        final ErrorEntity errorResponseEntity =
+            ErrorEntity.fromJson(e.response!.data);
+        return left(
+          NetworkError(
+            httpError: errorResponseEntity.code,
+            message: errorResponseEntity.message,
+            cause: Exception("Server Response Error"),
+          ),
+        );
+      } catch (_) {
         return left(
           NetworkError(
             cause: Exception("Server Response Error"),
-            httpError: eitherResponse.response.statusCode ?? 404,
-            message: eitherResponse.response.statusMessage ?? '',
+            httpError: e.response?.statusCode ?? 404,
+            message: e.response?.statusMessage ?? '',
           ),
         );
       }
     }
-  } on DioException catch (e) {
+
+    // Handle Dio Error Types
     switch (e.type) {
       case DioExceptionType.connectionTimeout:
         return left(
@@ -77,7 +64,7 @@ Future<Either<NetworkError, T>> safeApiCall<T>(Future<T> apiCall) async {
       case DioExceptionType.unknown:
         return left(
           NetworkError(
-            message: 'Unknown error',
+            message: e.message ?? 'Unknown error',
             httpError: 502,
             cause: e,
           ),
@@ -91,10 +78,13 @@ Future<Either<NetworkError, T>> safeApiCall<T>(Future<T> apiCall) async {
         cause: e,
       ),
     );
+  } catch (e) {
+    return left(
+      NetworkError(
+        message: e.toString(),
+        httpError: 500,
+        cause: Exception(e),
+      ),
+    );
   }
-  // on HttpException catch (e) {
-  //   return left(NetworkError(message: e.message, httpError: 502, cause: e));
-  // } catch (e) {
-  //   return left(NetworkError(message: e.toString(), httpError: 502, cause: e));
-  // }
 }

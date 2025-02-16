@@ -20,11 +20,13 @@ extension GetItInjectableX on _i174.GetIt {
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
   }) {
-    final gh = _i526.GetItHelper(this, environment, environmentFilter);
-
-    gh.factory<_i141.HomeBloc>(
-      () => _i141.HomeBloc(gh<_i494.GetArticleUseCase>()),
+    final gh = _i526.GetItHelper(
+      this,
+      environment,
+      environmentFilter,
     );
+    gh.factory<_i141.HomeBloc>(
+        () => _i141.HomeBloc(gh<_i494.GetArticleUseCase>()));
     return this;
   }
 }
