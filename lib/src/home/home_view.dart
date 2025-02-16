@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_architecture/core/base/base_widget/modular_state.dart';
 import 'package:flutter_clean_architecture/src/home/bloc/home_bloc.dart';
 
-class HomeView extends ModularState<HomeBloc> {
+class HomeView extends BaseView<HomeBloc> {
   const HomeView(super.bloc, {super.key});
 
   @override
-  Widget build(BuildContext context, HomeBloc model) {
+  Widget build(BuildContext context, HomeBloc bloc) {
     return Column(
       children: [
         BlocBuilder<HomeBloc, HomeState>(

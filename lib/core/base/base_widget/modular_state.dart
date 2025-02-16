@@ -1,34 +1,31 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-abstract class ModularState<T extends BlocBase> extends Widget {
-  const ModularState(this._bloc, {super.key});
+abstract class BaseView<B extends BlocBase> extends Widget {
+  const BaseView(this._bloc, {super.key});
 
-  final T _bloc;
+  final B _bloc;
 
   @protected
-  Widget build(BuildContext context, T model);
+  Widget build(BuildContext context, B bloc);
 
   @override
-  DataProviderElement<T> createElement() => DataProviderElement<T>(this, _bloc);
+  ViewElement<B> createElement() => ViewElement<B>(this, _bloc);
 
   void dispose() {}
 }
 
-class DataProviderElement<T extends BlocBase> extends ComponentElement {
-  DataProviderElement(ModularState super.widget, this._bloc);
+class ViewElement<B extends BlocBase> extends ComponentElement {
+  ViewElement(BaseView super.widget, this._bloc);
 
-  final T _bloc;
-
-  // @override
-  // ModularState get widget => super.widget as ModularState;
+  final B _bloc;
 
   @override
-  late final ModularState widget = super.widget as ModularState;
+  late final BaseView widget = super.widget as BaseView;
 
   @override
   Widget build() {
-    return BlocProvider<T>(
+    return BlocProvider<B>(
       create: (context) => _bloc,
       child: widget.build(this, _bloc),
     );
@@ -39,15 +36,4 @@ class DataProviderElement<T extends BlocBase> extends ComponentElement {
     super.deactivate();
     widget.dispose();
   }
-// @override
-// void mount() {
-//   super.mount();
-//   bloc.init(); // Call init function on bloc
-// }
-
-// @override
-// void unmount() {
-//   widget.dispose(); // Dispose bloc resources
-//   super.unmount();
-// }
 }
