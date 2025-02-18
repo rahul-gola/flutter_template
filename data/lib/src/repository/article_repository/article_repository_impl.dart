@@ -10,7 +10,7 @@ class ArticleRepositoryImpl implements ArticleRepository {
   final ArticleDataSource articleDataSource;
 
   @override
-  Future<Either<NetworkError, List<ArticleModel>>> getArticles() {
-    return safeApiCall<List<ArticleModel>>(articleDataSource.getArticles());
+  Future<Either<NetworkError, List<ArticleModel>>> getArticles(Map<String, dynamic> queries) {
+    return safeApiCall<List<ArticleModel>>(articleDataSource.getArticles(queries));
   }
 }

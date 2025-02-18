@@ -18,9 +18,12 @@ class _RetrofitService implements RetrofitService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<ArticleModel>> getArticles() async {
+  Future<List<ArticleModel>> getArticles(
+    Map<String, dynamic> queryParameters,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(queryParameters);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<List<ArticleModel>>(

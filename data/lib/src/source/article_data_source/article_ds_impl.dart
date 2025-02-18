@@ -10,5 +10,7 @@ class ArticleDataSourceImpl implements ArticleDataSource {
   final RetrofitService _retrofitService;
 
   @override
-  Future<List<ArticleModel>> getArticles() => _retrofitService.getArticles();
+  Future<List<ArticleModel>> getArticles(Map<String, dynamic> queries) {
+    return _retrofitService.getArticles(queries);
+  }
 }

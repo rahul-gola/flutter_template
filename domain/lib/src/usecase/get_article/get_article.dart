@@ -7,26 +7,26 @@ import 'package:domain/src/utils/either.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class GetArticleUseCase
-    extends BaseUseCase<NetworkError, GetArticleParams, List<ArticleModel>> {
+class GetArticleUseCase extends BaseUseCase<NetworkError, GetArticleParams, List<ArticleModel>> {
   final ArticleRepository _articleRepository;
 
   GetArticleUseCase(this._articleRepository);
 
   @override
   Future<Either<NetworkError, List<ArticleModel>>> execute(
-      GetArticleParams params) {
-    return _articleRepository.getArticles();
+    GetArticleParams params,
+  ) {
+    return _articleRepository.getArticles(params.toJson);
   }
 }
 
 class GetArticleParams extends Params {
-  GetArticleParams({required this.category});
+  GetArticleParams({required this.limit});
 
-  final String category;
+  final int limit;
 
   @override
-  Map<String, dynamic> toJson() {
-    return {"": category};
+  Map<String, dynamic> get toJson {
+    return {"limit": limit};
   }
 }

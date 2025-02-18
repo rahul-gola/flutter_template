@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_clean_architecture/core/di/di.dart';
-import 'package:flutter_clean_architecture/src/home/bloc/home_bloc.dart';
 
 /// Abstract class that extends [Widget] and provides a base structure for stateless widgets
 /// that use a [Bloc] for state management.
@@ -84,47 +82,5 @@ class DataProviderElement<T extends BlocBase> extends ComponentElement {
   void deactivate() {
     super.deactivate();
     widget.dispose();
-  }
-}
-
-/// Concrete implementation of [StatelessBase] for the home screen.
-///
-/// Uses [HomeBloc] for state management and provides a basic UI structure.
-class HomeScreen extends StatelessBase<HomeBloc> {
-  /// Constructor for [HomeScreen].
-  const HomeScreen({super.key});
-
-  /// Provides the [HomeBloc] instance.
-  ///
-  /// Retrieves the [HomeBloc] instance from the dependency injection container.
-  @override
-  HomeBloc get bloc => getIt<HomeBloc>();
-
-  /// Builds the UI for the home screen.
-  ///
-  /// [context] is the current [BuildContext].
-  /// [bloc] is the [HomeBloc] instance provided by the widget.
-  @override
-  Widget build(BuildContext context, HomeBloc bloc) {
-    return Container();
-  }
-
-  /// Builds the [AppBar] for the home screen.
-  ///
-  /// Returns a [PreferredSize] widget with a height of 54 and an empty [Container] as its child.
-  @override
-  PreferredSizeWidget? buildAppbar() {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(54),
-      child: Container(),
-    );
-  }
-
-  /// Disposes resources if needed.
-  ///
-  /// In this case, number of additional resources need to be disposed.
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

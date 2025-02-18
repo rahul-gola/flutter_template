@@ -19,7 +19,7 @@ class HomeBloc extends BlocBase<HomeEvent, HomeState> {
     super.init();
     apiCall<List<ArticleModel>>(
       _getArticleUseCase,
-      params: GetArticleParams(category: ''),
+      params: GetArticleParams(limit: 5),
       onSuccess: (data) => add(GetArticlesEvent(data)),
     );
   }
